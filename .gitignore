@@ -1,0 +1,13 @@
+#Node
+node_modules/
+package-lock.json
+
+#enviroment
+.env
+
+#IDE
+.vscode/
+
+#SO
+.DS_Store
+Thumbs.db
