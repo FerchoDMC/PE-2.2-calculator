@@ -21,27 +21,10 @@ Este proyecto implementa un **tool de cálculo** expuesto vía API sobre Fastify
 - npm install -D @types/node nodemon ts-node typescript
 
 ## 📁 2. Estructura del Proyecto
-.
-├─ capturas/
-├─ node_modules/
-├─ src/
-│  ├─ routes/
-│  │  └─ calculator.routes.ts
-│  ├─ tools/
-│  │  └─ calculator.tools.json
-│  └─ index.ts
-├─ package.json
-├─ package-lock.json
-├─ README.md
-└─ tsconfig.json
+![Estructura](./capturas/estructura.png)
 
 ## ⚠️ 3. Manejo Centralizado de Errores
-
-  Código   Uso
-  -------- -----------------------
-  200      Operación exitosa
-  400      Error de validación
-  500      Error interno
+![Codigos](./capturas/codigo.png)
 
 ## 🧐 4.Ejemplos de validacion en Thunder
 
