@@ -9,27 +9,37 @@ interface CalculatorRequest {
 
 export const calculatorRoutes = (fastify: FastifyInstance) =>{
     fastify.post<{Body: CalculatorRequest}>(
-        '/tools/calculator', //especificar ruta
+        '/v1/tools/calculator', //especificar ruta
 
         {
-            schema:{
-                description: "ejecutar operaciones aritmeticas basicas",
-                tags:['calculator'],
-                body: calculatorTools.inputSchema,
-                response:{
-                    200:{
+            schema: {
+                description: "Ejecutar operaciones aritméticas básicas",
+                tags: ['calculator'],
+                security: [{ ApiKeyAuth: [] }], // Documentamos que requiere seguridad
+                body: {
+                    ...calculatorTools.inputSchema,
+                    // Ejemplo para el Request
+                    example: { operation: "divide", a: 10, b: 2 }
+                },
+                response: {
+                    200: {
+                        description: 'Resultado exitoso de la operación',
                         type: 'object',
-                        properties:{
-                            result: {type: 'number'},
-                            operation: {type: 'string'}
-                        }
+                        properties: {
+                            result: { type: 'number' },
+                            operation: { type: 'string' }
+                        },
+                        example: { result: 5, operation: "divide" }
                     },
-                    400:{
+                    400: {
+                        description: 'Error de validación o división por cero',
                         type: 'object',
-                        properties:{
-                            error: {type: 'string'}
-
-                        }
+                        properties: {
+                            error: { type: 'string' },
+                            message: { type: 'string' }
+                        },
+                        // Caso especial solicitado: división por cero
+                        example: { error: "Invalid operation", message: "Cannot divide by zero" }
                     }
                 }
             }
@@ -57,7 +67,7 @@ export const calculatorRoutes = (fastify: FastifyInstance) =>{
                     return reply.status(400).send({error: 'Invalid operation'})      
             }
 
-            return {result, operation};
+            return reply.status(200).send({result, operation});
 
         }
     )

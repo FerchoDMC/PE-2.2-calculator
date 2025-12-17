@@ -1,13 +1,13 @@
 # 🧮 Tool "Calculator" – Proyecto Fastify + TypeScript
 
-Este proyecto implementa un **tool de cálculo** expuesto vía API sobre Fastify, con validación estricta mediante JSON Schema y documentación OpenAPI generada automáticamente. El objetivo es entregar un endpoint robusto, escalable y alineado a buenas prácticas de desarrollo backend.
+Este proyecto implementa un **servidor de herramientas de cálculo** basado en Fastify y TypeScript. Ha sido refinado para cumplir con los estándares de OpenAPI 3.0, incluyendo metadata detallada, esquemas de seguridad y ejemplos de casos de uso para facilitar su integración con Model Context Protocol (MCP).
 
 ## 🚀 1. Configuración del Proyecto
 
 ### Requerimientos previos
 - Node.js 
 - npm 
-- Thunder Client 
+- Extensiones: Thunder Client / Swagger UI
 
 ### Inicializacion del proyecto
 - npm init -y
@@ -26,88 +26,40 @@ Este proyecto implementa un **tool de cálculo** expuesto vía API sobre Fastify
 ## ⚠️ 3. Manejo Centralizado de Errores
 ![Codigos](./capturas/codigo.png)
 
-## 🧐 4.Ejemplos de validacion en Thunder
+## 🧐 4.Seguridad Documentada
 
-## Validacion de SUMA
-### JSON content
-{
-  "operation": "add", 
-  "a": 10, 
-  "b": 5
-}
-### Response
-{
-  "result": 15,
-  "operation": "add"
-}
-### Captura de Pantalla
-![Ejemplo de suma](./capturas/suma.png)
+En esta fase, la seguridad se implmento a nivel de documentación y contrato OpenAPI, aunque no esta activa en la lógica del servidor de desarrollo:
 
+**¿Qué se definió?:**
 
-## Validacion de resta
-### JSON content
-{
-  "operation": "subtract", 
-  "a": 10, 
-  "b": 5
-}
-### Response
-{
-  "result": 5,
-  "operation": "subtract"
-}
-### Captura de Pantalla
-![Ejemplo de resta](./capturas/resta.png)
+Se configuraron los esquemas de API Keys (X-API-KEY) y Bearer Tokens dentro de los componentes de Swagger.
+El objetivo es dejar listo el contrato para que cualquier cliente sepa que en un entorno de producción, debe proveer credenciales para operar.
 
+**Mitigación de Tool Poisoning:**
 
-## Validacion de multiplicacion
-### JSON content
-{
-  "operation": "multiply", 
-  "a": 10, 
-  "b": 5
-}
-### Response
-{
-  "result": 50,
-  "operation": "multiply"
-}
-### Captura de Pantalla
-![Ejemplo de multiplicacion](./capturas/multiply.png)
+Al documentar estos requisitos, se establece la base para prevenir que atacantes engañen a la IA para ejecutar comandos maliciosos, asegurando que solo usuarios con una llave válida puedan usar la calculadora en el futuro.
+![seguridad](./capturas/autorize.png)
 
+## 📈 5. Versionado y Evolución del API
 
-## Validacion de division
-### JSON content
-{
-  "operation": "divide", 
-  "a": 10, 
-  "b": 5
-}
-### Response
-{
-  "result": 2,
-  "operation": "divide"
-}
-### Captura de Pantalla
-![Ejemplo de multiplicacion](./capturas/divide.png)
+Para que el proyecto sea profesional y no se rompa al hacer cambios, apliqué estas estrategias:
 
+**Versionado Semántico (SemVer):**
+El proyecto está configurado en la versión 1.0.0 dentro de la metadata del API.
 
-## Validacion de division por 0
-### JSON content
-{
-  "operation": "divide", 
-  "a": 10, 
-  "b": 0
-}
-### Response
-{
-  "error": "Invalid operation"
-}
-### Captura de Pantalla
-![Ejemplo de multiplicacion](./capturas/divide0.png)
+**Estrategia por URL:**
+Se eligió documentar la ruta bajo */v1/tools/calculator*, lo cual permite que la IA identifique versiones explícitas sin necesidad de revisar cabeceras.
+
+**Ley de Postel (Principio de Robustez):**
+Mi implementación es flexible; el servidor procesa la petición incluso si recibe datos extra no esperados, pero siempre responde con un formato de salida estricto y predecible.
+
+![Versionado](./capturas/versionado.png)
+
+## 💭 6. Ejemplo OpenAPI
+
+![OpenAPI](./capturas/example.png)
+
 
 
 ## Validacion del servidor corriendo
-![Servidor corriendo](./capturas/cap-server.png)
-
-
+![Servidor corriendo](./capturas/servidor.png)

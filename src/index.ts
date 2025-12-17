@@ -6,26 +6,54 @@ import fastifySwaggerUi from '@fastify/swagger-ui'
 
 //Inicializar 
 const fastify = Fastify({
-  logger: true
-})
+  logger: true,
+  ajv: {
+    customOptions: {
+      keywords: ['example'], 
+      strict: false, 
+    }
+  }
+});
 
 
 
 
-fastify.register(fastifySwagger,{
+fastify.register(fastifySwagger, {
   openapi: {
-    info:{
-      title: "Servidor MCP para calcular operaciones basicas",
-      description: "Api para realizar operaciones aritmeticas basicas usando MCP",
-      version:"1.0.0",
-    },
-    servers:[
-      {
-        url: "http://localhost:3000",
-        description: "Servidor de desarrollo"
+    info: {
+      title: "MCP Calculator Server",
+      description: "Servidor MCP especializado en proporcionar capacidades de cálculo aritmético con validación estricta. Diseñado para ser consumido por modelos de lenguaje (LLMs).",
+      version: "1.0.0", // SemVer
+      termsOfService: "http://localhost:3000/terms",
+      contact: {
+        name: "Desarrollador - FerchoDMC",
+        url: "https://github.com/FerchoDMC/PE-2.2-calculator.git",
+        email: "fercho@hotmail.com"
+      },
+      license: {
+        name: "MIT",
+        url: "https://opensource.org/licenses/MIT"
       }
+    },
+    servers: [
+      { url: "http://localhost:3000", description: "Servidor de Desarrollo" }
     ],
-    tags:[{name: 'calculator', description: 'calculadora de operaciones'}]
+    components: {
+      securitySchemes: {
+        ApiKeyAuth: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'X-API-KEY',
+          description: 'Mitigación de Tool Poisoning: Asegura que solo el cliente MCP autorizado invoque las herramientas.'
+        },
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          description: 'Autenticación estándar basada en tokens para servicios externos.'
+        }
+      }
+    }
   }
 })
 
